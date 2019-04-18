@@ -10,7 +10,7 @@ import {
   isFull
 } from "./board";
 import BoardDisplay, { PlayHandler } from "./BoardDisplay";
-import Result from "./Winner";
+import Result from "./Result";
 
 interface AppState {
   board: Board;
