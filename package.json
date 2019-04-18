@@ -1,5 +1,5 @@
 {
-  "name": "oxo",
+  "name": "@mthx/oxo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
