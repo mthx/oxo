@@ -1,0 +1,14 @@
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 8em;
+}
+.result button {
+  background-color: rgb(255, 28, 112);
+  color: white;
+  font-size: 4rem;
+  width: 25rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
