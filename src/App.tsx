@@ -44,12 +44,11 @@ class App extends Component<{}, AppState> {
   };
   render() {
     const { board } = this.state;
-    const done = isFull(board);
+    const winner = checkWinner(board);
+    const done = isFull(board) || winner;
     return (
       <div className={styles.app}>
-        {done && (
-          <Result value={checkWinner(board)} onReset={this.handleReset} />
-        )}
+        {done && <Result value={winner} onReset={this.handleReset} />}
         {!done && <BoardDisplay value={board} onPlay={this.handlePlay} />}
       </div>
     );
