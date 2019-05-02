@@ -1,17 +1,20 @@
 import React from "react";
-import { BoardLine, Board } from "./board";
+import { BoardLine, Board, MaybeMark } from "./board";
 import styles from "./BoardDisplay.module.css";
 
 export type PlayHandler = (row: number, column: number) => void;
+export type MarkSymbolMapping = { [key: string]: string };
 
 const BoardDisplayRow = ({
   value,
   rowNumber,
-  onClick
+  onClick,
+  marks
 }: {
   value: BoardLine;
   rowNumber: number;
   onClick: PlayHandler;
+  marks: MarkSymbolMapping;
 }) => (
   <tr>
     {value.map((square, columnNumber) => (
@@ -21,7 +24,7 @@ const BoardDisplayRow = ({
           onClick={() => onClick(rowNumber, columnNumber)}
           disabled={!!square}
         >
-          {square}
+          {square && marks[square]}
         </button>
       </td>
     ))}
@@ -30,16 +33,19 @@ const BoardDisplayRow = ({
 
 const BoardDisplay = ({
   value,
-  onPlay
+  onPlay,
+  marks
 }: {
   value: Board;
   onPlay: PlayHandler;
+  marks: MarkSymbolMapping;
 }) => {
   return (
     <table className={styles.board}>
       <tbody>
         {value.map((row, rowNumber) => (
           <BoardDisplayRow
+            marks={marks}
             key={rowNumber}
             value={row}
             rowNumber={rowNumber}

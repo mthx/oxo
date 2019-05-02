@@ -9,18 +9,32 @@ import {
   Board,
   isFull
 } from "./board";
-import BoardDisplay, { PlayHandler } from "./BoardDisplay";
+import emoji from "./emoji";
+import BoardDisplay, { PlayHandler, MarkSymbolMapping } from "./BoardDisplay";
 import Result from "./Result";
+
+const chooseRandomMarks = () => {
+  const characters = Object.values(emoji);
+  let x: number = 0;
+  let o: number = 0;
+  while (x === o) {
+    x = Math.floor(Math.random() * characters.length);
+    o = Math.floor(Math.random() * characters.length);
+  }
+  return { X: characters[x], O: characters[o] };
+};
 
 interface AppState {
   board: Board;
   turn: Mark;
+  marks: MarkSymbolMapping;
 }
 
 const nextTurn = (mark: Mark) => (mark === "X" ? "O" : "X");
 const initialState: () => AppState = () => ({
   board: blankBoard(),
-  turn: "X"
+  turn: "X",
+  marks: chooseRandomMarks()
 });
 
 class App extends Component<{}, AppState> {
@@ -43,13 +57,17 @@ class App extends Component<{}, AppState> {
     });
   };
   render() {
-    const { board } = this.state;
+    const { board, marks } = this.state;
     const winner = checkWinner(board);
     const done = isFull(board) || winner;
     return (
       <div className={styles.app}>
-        {done && <Result value={winner} onReset={this.handleReset} />}
-        {!done && <BoardDisplay value={board} onPlay={this.handlePlay} />}
+        {done && (
+          <Result marks={marks} value={winner} onReset={this.handleReset} />
+        )}
+        {!done && (
+          <BoardDisplay value={board} onPlay={this.handlePlay} marks={marks} />
+        )}
       </div>
     );
   }
