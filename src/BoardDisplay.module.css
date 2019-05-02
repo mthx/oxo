@@ -1,6 +1,6 @@
 .board {
-  height: 70vh;
-  width: 70vh;
+  height: 50vh;
+  width: 50vh;
 }
 table.board {
   border-collapse: collapse;
@@ -33,7 +33,7 @@ button.square {
   background: inherit;
   color: black;
   font-family: sans-serif;
-  font-size: 8rem;
+  font-size: 6rem;
   cursor: pointer;
   text-align: center;
   vertical-align: middle;
