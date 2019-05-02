@@ -1,27 +1,21 @@
 import React, { Component } from "react";
 import styles from "./App.module.css";
-import {
-  checkWinner,
-  play,
-  blankBoard,
-  MaybeMark,
-  Mark,
-  Board,
-  isFull
-} from "./board";
+import { checkWinner, play, blankBoard, Mark, Board, isFull } from "./board";
 import emoji from "./emoji";
 import BoardDisplay, { PlayHandler, MarkSymbolMapping } from "./BoardDisplay";
 import Result from "./Result";
 
+const emojiCharacters = Object.values(emoji);
+const pick = () =>
+  emojiCharacters[Math.floor(Math.random() * emojiCharacters.length)];
 const chooseRandomMarks = () => {
-  const characters = Object.values(emoji);
-  let x: number = 0;
-  let o: number = 0;
-  while (x === o) {
-    x = Math.floor(Math.random() * characters.length);
-    o = Math.floor(Math.random() * characters.length);
+  let X: string = "";
+  let O: string = "";
+  while (X === O) {
+    X = pick();
+    O = pick();
   }
-  return { X: characters[x], O: characters[o] };
+  return { X, O };
 };
 
 interface AppState {
