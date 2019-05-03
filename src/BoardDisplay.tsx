@@ -22,6 +22,7 @@ const BoardDisplayRow = ({
         <button
           className={styles.square}
           onClick={() => onClick(rowNumber, columnNumber)}
+          onTouchEnd={() => onClick(rowNumber, columnNumber)}
           disabled={!!square}
         >
           {square && marks[square]}
