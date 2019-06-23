@@ -23,7 +23,7 @@ describe("checkWinner", () => {
         ["X", "X", "X"],
         [undefined, undefined, undefined],
         [undefined, undefined, undefined]
-      ])
+      ])!.mark
     ).toEqual("X");
   });
   it("finds winner column", () => {
@@ -32,7 +32,7 @@ describe("checkWinner", () => {
         [undefined, "O", undefined],
         [undefined, "O", undefined],
         [undefined, "O", undefined]
-      ])
+      ])!.mark
     ).toEqual("O");
   });
   it("finds diagonals", () => {
@@ -41,14 +41,14 @@ describe("checkWinner", () => {
         ["X", undefined, undefined],
         [undefined, "X", undefined],
         [undefined, undefined, "X"]
-      ])
+      ])!.mark
     ).toEqual("X");
     expect(
       checkWinner([
         [undefined, undefined, "O"],
         [undefined, "O", undefined],
         ["O", undefined, undefined]
-      ])
+      ])!.mark
     ).toEqual("O");
   });
   it("is undefined for a draw", () => {

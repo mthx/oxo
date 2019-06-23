@@ -3,7 +3,6 @@ import styles from "./App.module.css";
 import { checkWinner, play, blankBoard, Mark, Board, isFull } from "./board";
 import emoji from "./emoji";
 import BoardDisplay, { PlayHandler, MarkSymbolMapping } from "./BoardDisplay";
-import Result from "./Result";
 
 const emojiCharacters = Object.values(emoji);
 const pick = () =>
@@ -53,15 +52,19 @@ class App extends Component<{}, AppState> {
   render() {
     const { board, marks } = this.state;
     const winner = checkWinner(board);
-    const done = isFull(board) || winner;
+    const done = isFull(board) || !!winner;
     return (
       <div className={styles.app}>
-        {done && (
-          <Result marks={marks} value={winner} onReset={this.handleReset} />
-        )}
-        {!done && (
-          <BoardDisplay value={board} onPlay={this.handlePlay} marks={marks} />
-        )}
+        <BoardDisplay
+          value={board}
+          onPlay={this.handlePlay}
+          marks={marks}
+          done={done}
+          winner={winner}
+        />
+        <div className={styles.buttons}>
+          {done && <button onClick={this.handleReset}>Play again!</button>}
+        </div>
       </div>
     );
   }

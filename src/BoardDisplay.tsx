@@ -1,57 +1,55 @@
 import React from "react";
-import { BoardLine, Board, MaybeMark } from "./board";
+import { BoardLine, Board, MaybeMark, Winner } from "./board";
 import styles from "./BoardDisplay.module.css";
+import classNames from "classnames";
 
 export type PlayHandler = (row: number, column: number) => void;
 export type MarkSymbolMapping = { [key: string]: string };
 
-const BoardDisplayRow = ({
-  value,
-  rowNumber,
-  onClick,
-  marks
-}: {
-  value: BoardLine;
-  rowNumber: number;
-  onClick: PlayHandler;
-  marks: MarkSymbolMapping;
-}) => (
-  <tr>
-    {value.map((square, columnNumber) => (
-      <td key={columnNumber}>
-        <button
-          className={styles.square}
-          onClick={() => onClick(rowNumber, columnNumber)}
-          onTouchEnd={() => onClick(rowNumber, columnNumber)}
-          disabled={!!square}
-        >
-          {square && marks[square]}
-        </button>
-      </td>
-    ))}
-  </tr>
-);
-
 const BoardDisplay = ({
   value,
   onPlay,
-  marks
+  marks,
+  winner,
+  done,
 }: {
   value: Board;
   onPlay: PlayHandler;
   marks: MarkSymbolMapping;
+  winner: Winner | undefined;
+  done: boolean;
 }) => {
+  const BoardDisplayRow = ({
+    value,
+    rowNumber
+  }: {
+    value: BoardLine;
+    rowNumber: number;
+  }) => (
+    <tr>
+      {value.map((square, columnNumber) => (
+        <td key={columnNumber}>
+          <button
+            className={classNames(styles.square, {
+              [styles.winningSquare]:
+                winner && winner.isWinningCell(rowNumber, columnNumber)
+            })}
+            onClick={() => onPlay(rowNumber, columnNumber)}
+            onTouchEnd={() => onPlay(rowNumber, columnNumber)}
+            disabled={!!square || done}
+          >
+            {square && marks[square]}
+          </button>
+        </td>
+      ))}
+    </tr>
+  );
+
   return (
     <table className={styles.board}>
       <tbody>
         {value.map((row, rowNumber) => (
-          <BoardDisplayRow
-            marks={marks}
-            key={rowNumber}
-            value={row}
-            rowNumber={rowNumber}
-            onClick={onPlay}
-          />
+          <BoardDisplayRow key={rowNumber} value={row} rowNumber={rowNumber} />
         ))}
       </tbody>
     </table>

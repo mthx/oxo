@@ -1,3 +1,8 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .board {
   height: 50vh;
   width: 50vh;
@@ -22,6 +27,9 @@ table.board tr:last-child td {
 }
 table.board tr td:last-child {
   border-right: 0;
+}
+button.square.winningSquare {
+  animation: spin 1.5s infinite linear;
 }
 button.square {
   display: inline-block;

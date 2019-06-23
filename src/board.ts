@@ -14,6 +14,8 @@ export const blankBoard: () => Board = () => [
 
 /**
  * Yields all the lines in the board (row/column/diagonal).
+ * All the rows top-to-bottom, then all the columns left-to-right
+ * then the top-left to bottom right diagonal then the remaining one.
  * @param board A board.
  */
 function* lines(board: Board): IterableIterator<BoardLine> {
@@ -27,15 +29,40 @@ function* lines(board: Board): IterableIterator<BoardLine> {
   yield [board[0][2], board[1][1], board[2][0]];
 }
 
+export interface Winner {
+  mark: Mark,
+  isWinningCell(row: number, column: number): boolean;
+}
+
+
 /**
  * Returns the winner or undefined.
  * @param board The board.
  */
-export function checkWinner(board: Board): MaybeMark {
+export function checkWinner(board: Board): Winner | undefined {
+  let lineNumber = 0;
   for (const line of lines(board)) {
     if (line[0] !== undefined && line[0] === line[1] && line[1] === line[2]) {
-      return line[0];
+      return {
+        mark: line[0],
+        isWinningCell: (row: number, column: number) => {
+          if (lineNumber < 3) {
+            return row === lineNumber;
+          }
+          if (lineNumber < 6) {
+            return column === lineNumber - 3;
+          }
+          if (lineNumber === 6) {
+            return (row === 0 && column === 0) || (row === 1 && column === 1) || (row === 2 && column === 2);
+          }
+          if (lineNumber === 7) {
+            return (row === 0 && column === 2) || (row === 1 && column === 1) || (row === 2 && column === 0);
+          }
+          throw new Error(`Unexpected line number: ${lineNumber}`);
+        }
+      };
     }
+    lineNumber++;
   }
   return undefined;
 }
