@@ -18,38 +18,50 @@ describe("isFull", () => {
 
 describe("checkWinner", () => {
   it("finds winner row", () => {
-    expect(
-      checkWinner([
-        ["X", "X", "X"],
-        [undefined, undefined, undefined],
-        [undefined, undefined, undefined]
-      ])!.mark
-    ).toEqual("X");
+    const winner = checkWinner([
+      ["X", "X", "X"],
+      [undefined, undefined, undefined],
+      [undefined, undefined, undefined]
+    ])!;
+    expect(winner.mark).toEqual("X");
+    expect(winner.isWinningCell(0, 0)).toBeTruthy();
+    expect(winner.isWinningCell(0, 1)).toBeTruthy();
+    expect(winner.isWinningCell(0, 2)).toBeTruthy();
+    expect(winner.isWinningCell(1, 0)).toBeFalsy();
   });
   it("finds winner column", () => {
-    expect(
-      checkWinner([
-        [undefined, "O", undefined],
-        [undefined, "O", undefined],
-        [undefined, "O", undefined]
-      ])!.mark
-    ).toEqual("O");
+    const winner = checkWinner([
+      [undefined, "O", undefined],
+      [undefined, "O", undefined],
+      [undefined, "O", undefined]
+    ])!;
+    expect(winner.mark).toEqual("O");
+    expect(winner.isWinningCell(0, 1)).toBeTruthy();
+    expect(winner.isWinningCell(1, 1)).toBeTruthy();
+    expect(winner.isWinningCell(2, 1)).toBeTruthy();
+    expect(winner.isWinningCell(2, 2)).toBeFalsy();
   });
   it("finds diagonals", () => {
-    expect(
-      checkWinner([
-        ["X", undefined, undefined],
-        [undefined, "X", undefined],
-        [undefined, undefined, "X"]
-      ])!.mark
-    ).toEqual("X");
-    expect(
-      checkWinner([
-        [undefined, undefined, "O"],
-        [undefined, "O", undefined],
-        ["O", undefined, undefined]
-      ])!.mark
-    ).toEqual("O");
+    const d1 = checkWinner([
+      ["X", undefined, undefined],
+      [undefined, "X", undefined],
+      [undefined, undefined, "X"]
+    ])!;
+    expect(d1.mark).toEqual("X");
+    expect(d1.isWinningCell(0, 0)).toBeTruthy();
+    expect(d1.isWinningCell(1, 1)).toBeTruthy();
+    expect(d1.isWinningCell(2, 2)).toBeTruthy();
+
+
+    const d2 = checkWinner([
+      [undefined, undefined, "O"],
+      [undefined, "O", undefined],
+      ["O", undefined, undefined]
+    ])!;
+    expect(d2.mark).toEqual("O");
+    expect(d2.isWinningCell(0, 2)).toBeTruthy();
+    expect(d2.isWinningCell(1, 1)).toBeTruthy();
+    expect(d2.isWinningCell(2, 0)).toBeTruthy();
   });
   it("is undefined for a draw", () => {
     expect(checkWinner([["O", "X", "X"], ["X", "O", "O"], ["X", "O", "X"]]))
